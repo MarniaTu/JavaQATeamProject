@@ -42,6 +42,9 @@ public class SavingAccount extends Account {
         if (maxBalance < 0) {
             throw new IllegalArgumentException("Максимальный лимит не может быть отрицательным, а у вас: -" + maxBalance);
         }
+        if (rate == 0) {
+            throw new IllegalArgumentException("Процентная ставка должна быть больше 0, а у вас: " + rate);
+        }
         this.balance = initialBalance;
         this.minBalance = minBalance;
         this.maxBalance = maxBalance;
