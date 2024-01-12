@@ -30,6 +30,9 @@ public class SavingAccount extends Account {
         if (initialBalance > maxBalance) {
             throw new IllegalArgumentException("Начальный баланс не может быть больше максимального лимита, а у вас: " + initialBalance + " > " + maxBalance);
         }
+        if (minBalance > maxBalance) {
+            throw new IllegalArgumentException("Минимальный лимит не может превышать максимальный лимит, а у вас: " + minBalance + " > " + maxBalance);
+        }
         this.balance = initialBalance;
         this.minBalance = minBalance;
         this.maxBalance = maxBalance;
