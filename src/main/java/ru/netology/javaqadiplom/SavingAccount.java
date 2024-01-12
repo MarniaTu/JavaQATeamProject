@@ -14,16 +14,36 @@ public class SavingAccount extends Account {
      * Создаёт новый объект сберегательного счёта с заданными параметрами.
      * Если параметры некорректны (мин. баланс больше максимального и так далее), то
      * должно выкидываться исключения вида IllegalArgumentException.
+     *
      * @param initialBalance - начальный баланс
-     * @param minBalance - минимальный баланс
-     * @param maxBalance - максимальный баланс
-     * @param rate - неотрицательное число, ставка в процентах годовых на остаток
+     * @param minBalance     - минимальный баланс
+     * @param maxBalance     - максимальный баланс
+     * @param rate           - неотрицательное число, ставка в процентах годовых на остаток
      */
     public SavingAccount(int initialBalance, int minBalance, int maxBalance, int rate) {
         if (rate < 0) {
-            throw new IllegalArgumentException(
-              "Накопительная ставка не может быть отрицательной, а у вас: " + rate
-            );
+            throw new IllegalArgumentException("Накопительная ставка не может быть отрицательной, а у вас: " + rate);
+        }
+        if (initialBalance < minBalance) {
+            throw new IllegalArgumentException("Начальный баланс не может быть меньше минимального баланса, а у вас: " + initialBalance + " < " + minBalance);
+        }
+        if (initialBalance > maxBalance) {
+            throw new IllegalArgumentException("Начальный баланс не может быть больше максимального лимита, а у вас: " + initialBalance + " > " + maxBalance);
+        }
+        if (minBalance > maxBalance) {
+            throw new IllegalArgumentException("Минимальный лимит не может превышать максимальный лимит, а у вас: " + minBalance + " > " + maxBalance);
+        }
+        if (initialBalance < 0) {
+            throw new IllegalArgumentException("Начальный баланс не может быть отрицательным, а у вас: -" + initialBalance);
+        }
+        if (minBalance < 0) {
+            throw new IllegalArgumentException("Минимальный лимит не может быть отрицательным, а у вас: -" + minBalance);
+        }
+        if (maxBalance < 0) {
+            throw new IllegalArgumentException("Максимальный лимит не может быть отрицательным, а у вас: -" + maxBalance);
+        }
+        if (rate == 0) {
+            throw new IllegalArgumentException("Процентная ставка должна быть больше 0, а у вас: " + rate);
         }
         this.balance = initialBalance;
         this.minBalance = minBalance;
@@ -37,6 +57,7 @@ public class SavingAccount extends Account {
      * на сумму покупки. Если же операция может привести к некорректному
      * состоянию счёта (например, баланс может уйти в минус), то операция должна
      * завершиться вернув false и ничего не поменяв на счёте.
+     *
      * @param amount - сумма покупки
      * @return true если операция прошла успешно, false иначе.
      */
@@ -59,9 +80,10 @@ public class SavingAccount extends Account {
      * на сумму покупки. Если же операция может привести к некорректному
      * состоянию счёта, то операция должна
      * завершиться вернув false и ничего не поменяв на счёте.
+     *
      * @param amount - сумма пополнения
-     * @return true если операция прошла успешно, false иначе.
      * @param amount
+     * @return true если операция прошла успешно, false иначе.
      * @return
      */
     @Override
@@ -69,8 +91,8 @@ public class SavingAccount extends Account {
         if (amount <= 0) {
             return false;
         }
-        if (balance + amount < maxBalance) {
-            balance = amount;
+        if (balance + amount <= maxBalance) {
+            balance += amount;
             return true;
         } else {
             return false;
@@ -82,6 +104,7 @@ public class SavingAccount extends Account {
      * счёт не будет меняться год. Сумма процентов приводится к целому
      * числу через отбрасывание дробной части (так и работает целочисленное деление).
      * Пример: если на счёте 200 рублей, то при ставке 15% ответ должен быть 30.
+     *
      * @return
      */
     @Override
