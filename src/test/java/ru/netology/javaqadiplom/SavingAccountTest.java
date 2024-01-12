@@ -165,5 +165,18 @@ public class SavingAccountTest {
 
         Assertions.assertTrue(account.pay(1_000));
     }
+    @Test
+    public void shouldCalculateYearChangeFromPositiveBalance() {
+        SavingAccount account = new SavingAccount (
+                8_000,
+                1_000,
+                10_000,
+                5
+                );
+
+        account.yearChange();
+
+        Assertions.assertEquals(400, account.yearChange());
+    }
 }
 
