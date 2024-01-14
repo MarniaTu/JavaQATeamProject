@@ -150,4 +150,15 @@ public class CreditAccountTest {
 
         Assertions.assertEquals(0, account.yearChange());
     }
+
+    @Test
+    public void shouldCalculateYearChangeFromSmallNegativeBalance() {
+        CreditAccount account = new CreditAccount(10_000, 5_000, 15);
+        account.pay(10_010);
+
+        account.yearChange();
+
+        Assertions.assertEquals(-1, account.yearChange());
+
+    }
 }
