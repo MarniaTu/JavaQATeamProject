@@ -25,7 +25,7 @@ public class CreditAccount extends Account {
                     "Накопительная ставка не может быть отрицательной, а у вас: " + rate
             );
         }
-        if (creditLimit <= 0) {
+        if (creditLimit < 0) {
             throw new IllegalArgumentException(
                     "Кредитный лимит не может быть отрицательным, а у вас: " + creditLimit
             );
@@ -39,7 +39,7 @@ public class CreditAccount extends Account {
      * Операция оплаты с карты на указанную сумму.
      * В результате успешного вызова этого метода, баланс должен уменьшиться
      * на сумму покупки. Если же операция может привести к некорректному
-     * состоянию счёта (например, баланс может уйти меньше чем лимит), то операция должна
+     * состоянию счёта (например, баланс может уйти меньше, чем лимит), то операция должна
      * завершиться вернув false и ничего не поменяв на счёте.
      * @param amount - сумма покупки
      * @return true если операция прошла успешно, false иначе.
@@ -49,13 +49,15 @@ public class CreditAccount extends Account {
         if (amount <= 0) {
             return false;
         }
-        balance = balance - amount;
-        if (balance > -creditLimit) {
-            balance = -amount;
-            return true;
-        } else {
-            return false;
+        if (balance - amount < 0) {
+            if(balance - amount < -creditLimit) {
+                return false;
+            }
         }
+
+        balance = balance - amount;
+        return true;
+
     }
 
     /**
