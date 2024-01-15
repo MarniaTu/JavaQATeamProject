@@ -178,5 +178,18 @@ public class SavingAccountTest {
 
         Assertions.assertEquals(400, account.yearChange());
     }
+    @Test
+    public void shouldCalculateYearChangeFromPositiveBalanceLess100() {
+        SavingAccount account = new SavingAccount (
+                1_010,
+                1_000,
+                10_000,
+                5
+        );
+
+        account.yearChange();
+
+        Assertions.assertEquals(50, account.yearChange());
+    }
 }
 
